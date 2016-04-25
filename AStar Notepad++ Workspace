@@ -1,0 +1,11 @@
+<NotepadPlus>
+    <Project name="AStar">
+        <File name="Core.py" />
+        <File name="Node.py" />
+        <Folder name="Engine">
+            <File name="System.py" />
+            <File name="Graphics.py" />
+            <File name="FPS.py" />
+        </Folder>
+    </Project>
+</NotepadPlus>
