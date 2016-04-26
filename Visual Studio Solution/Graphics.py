@@ -9,7 +9,7 @@ class Graphics(object):
 	def __init__(self):
 		if Graphics.s_Self != None:
 			raise Exception('This singleton class already exists')
-	
+
 	@staticmethod
 	def Init():
 		Graphics.s_Self = Graphics()
