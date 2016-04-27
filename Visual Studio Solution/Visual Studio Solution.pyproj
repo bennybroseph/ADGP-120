@@ -33,6 +33,9 @@
     <Compile Include="FPS.py" />
     <Compile Include="Graphics.py" />
     <Compile Include="Node.py" />
+    <Compile Include="SearchSpace.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="System.py" />
   </ItemGroup>
   <PropertyGroup>
