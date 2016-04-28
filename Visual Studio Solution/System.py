@@ -5,15 +5,19 @@ class System:
     # Access with 'System.Color'
     class Color:
         
-        RED 	= (244, 67, 54, 255)
-        GREEN	= (76, 175, 80, 255)
-        BLUE	= (33, 150, 243, 255)
+        RED 	    = (244, 67, 54, 255)
+        GREEN	    = (76, 175, 80, 255)
+        DARK_GREEN  = (56, 142, 60, 255)
+        BLUE	    = (33, 150, 243, 255)
         
         YELLOW = (255, 235, 59, 255)
         ORANGE = (255, 152, 0, 255)
         
-        WHITE = (255, 255, 255, 255)
-        BLACK = (0, 0, 0, 255)
+        WHITE       = (255, 255, 255, 255)
+        LIGHT_GREY  = (189, 189, 189, 255)
+        GREY        = (158, 158, 158, 255)
+        DARK_GREY   = (117, 117, 117, 255)
+        BLACK       = (0, 0, 0, 255)
 
         TRANSPARENT = (0, 0, 0, 0)
        

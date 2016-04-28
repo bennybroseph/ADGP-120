@@ -13,6 +13,9 @@ def main():
     
     searchspace = SearchSpace()
 
+    KeyDownListeners = []
+    KeyDownListeners.append(searchspace.OnKeyDown)
+
     MouseDownListeners = []
     MouseDownListeners.append(searchspace.OnMouseDown)
 
@@ -27,6 +30,8 @@ def main():
                 if event.key == pygame.K_ESCAPE:sys.exit()
                 if event.key == pygame.K_F10:
                     Graphics.ToggleFullscreen()
+                for delegate in KeyDownListeners:
+                    delegate(event.key, event.mod)
 
             if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEBUTTONUP:
                 mousePos = (event.pos[0] / Graphics.GetScale()[0], event.pos[1] / Graphics.GetScale()[1])
