@@ -140,6 +140,9 @@ class SearchSpace(object):
         self.m_FontSurfaceIsDirty = True
         self.m_DebugSurfaceIsDirty = True
 
+        if self.m_SolveSpeed == 0:
+            yield
+
     def OnKeyDown(self, a_Key, a_Mod):
         if a_Key == pygame.K_F1:
             self.m_DisplayText = not self.m_DisplayText

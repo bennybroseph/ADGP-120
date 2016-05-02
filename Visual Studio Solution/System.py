@@ -25,8 +25,8 @@ class System:
     # Access with 'System.Display'
     class Display:
         
-        RESOLUTION_WIDTH	= 1700
-        RESOLUTION_HEIGHT	= 950
+        RESOLUTION_WIDTH	= 1600
+        RESOLUTION_HEIGHT	= 900
         
         RESOLUTION_SIZE = (RESOLUTION_WIDTH, RESOLUTION_HEIGHT)
         
@@ -44,16 +44,16 @@ class System:
 
     class Graph:
 
-        NODE_WIDTH  = 100
-        NODE_HEIGHT = 100
+        NODE_WIDTH  = 75
+        NODE_HEIGHT = 75
 
         NODE_SIZE = (NODE_WIDTH, NODE_HEIGHT)
 
         LINE_WIDTH  = 5
         LINE_HEIGHT = 5
 
-    Graph.NUM_NODES_X = Display.RESOLUTION_WIDTH   / Graph.NODE_WIDTH
-    Graph.NUM_NODES_Y = Display.RESOLUTION_HEIGHT  / Graph.NODE_HEIGHT
+    Graph.NUM_NODES_X = (Display.RESOLUTION_WIDTH   / Graph.NODE_WIDTH)
+    Graph.NUM_NODES_Y = (Display.RESOLUTION_HEIGHT  / Graph.NODE_HEIGHT)
 
     Graph.NUM_NODES_X = (Display.RESOLUTION_WIDTH  - (Graph.LINE_WIDTH  * Graph.NUM_NODES_X)) / Graph.NODE_WIDTH
     Graph.NUM_NODES_Y = (Display.RESOLUTION_HEIGHT - (Graph.LINE_HEIGHT * Graph.NUM_NODES_Y)) / Graph.NODE_HEIGHT
