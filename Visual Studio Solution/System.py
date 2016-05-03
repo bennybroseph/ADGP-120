@@ -52,6 +52,8 @@ class System:
         LINE_WIDTH  = 5
         LINE_HEIGHT = 5
 
+        DELAY_INCREMENT = 0.05
+
     Graph.NUM_NODES_X = (Display.RESOLUTION_WIDTH   / Graph.NODE_WIDTH)
     Graph.NUM_NODES_Y = (Display.RESOLUTION_HEIGHT  / Graph.NODE_HEIGHT)
 

@@ -1,4 +1,7 @@
-import sys, pygame, time
+import sys
+import time
+
+import pygame
 
 from System		import *
 from Graphics	import *
@@ -21,7 +24,7 @@ def main():
 
     MouseUpListeners = []
     MouseUpListeners.append(searchspace.OnMouseUp)
-
+    
     while True:
 
         for event in pygame.event.get():            
@@ -44,7 +47,13 @@ def main():
                     for delegate in MouseUpListeners:
                         delegate(mousePos, event.button)
         
+       
+        
+       
+       
+        
         searchspace.Update()
+
         searchspace.Draw()
 
         FPS.Update()

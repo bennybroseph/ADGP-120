@@ -1,4 +1,10 @@
-import os, sys, Tkinter, pygame, pygame.font, copy
+import os
+import sys
+import copy
+
+import Tkinter
+import pygame
+import pygame.font
 
 from System import *
 

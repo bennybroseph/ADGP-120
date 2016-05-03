@@ -10,11 +10,11 @@ class Node(object):
         self.m_H = 0
         
         self.m_Adjacent = []
-        self.m_Parent = None
-        
-        self.m_Index = ()
+        self.m_Parent = None   
 
         self.m_IsTraversable = bool(random.randint(0, 3))
+
+        self.m_Index = ()
 
         self.m_Color = System.Color.WHITE if self.m_IsTraversable else System.Color.RED
 
@@ -40,9 +40,12 @@ class Node(object):
                 self.m_Color = System.Color.GREEN
             elif self == a_Goal:
                 self.m_Color = System.Color.YELLOW
+            elif self.m_IsTraversable == False:
+                self.m_Color =  System.Color.RED
             elif self in a_Open:
                 self.m_Color = System.Color.BLUE
             elif self in a_Closed:
                 self.m_Color = System.Color.DARK_GREY
             else:
-                self.m_Color = System.Color.WHITE if self.m_IsTraversable else System.Color.RED
+                self.m_Color = System.Color.WHITE
+            

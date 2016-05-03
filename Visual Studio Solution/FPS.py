@@ -1,4 +1,6 @@
-import pygame.font, time
+import time
+
+import pygame.font
 
 from System 	import *
 from Graphics	import *
@@ -32,7 +34,11 @@ class FPS(object):
 
         FPS.s_Self.m_FpsTextOutline = pygame.Surface((0, 0))
         FPS.s_Self.m_FpsTextOutlineRect = FPS.s_Self.m_FpsText.get_rect()
-        
+    
+    @staticmethod
+    def DeltaTime():
+        return FPS.s_Self.m_DeltaTime
+           
     @staticmethod
     def Update():
         FPS.s_Self.m_CurrentFrames += 1
