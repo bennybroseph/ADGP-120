@@ -4,20 +4,20 @@ import pygame
 from Graphics import Graphics
 from FPS import FPS
 
-from SearchSpace import SearchSpace
+from Drawer import Drawer
 
 
 def main():
     Graphics.init()
     FPS.init()
 
-    search_space = SearchSpace()
+    drawer = Drawer()
 
-    key_down_listeners = [search_space.on_key_down]
+    key_down_listeners = [drawer.on_key_down]
 
-    mouse_down_listeners = [search_space.on_mouse_down]
+    mouse_down_listeners = [drawer.on_mouse_down]
 
-    mouse_up_listeners = [search_space.on_mouse_up]
+    mouse_up_listeners = [drawer.on_mouse_up]
 
     while True:
 
@@ -45,9 +45,9 @@ def main():
                     for delegate in mouse_up_listeners:
                         delegate(mouse_position, event.button)
 
-        search_space.update()
+        drawer.update()
 
-        search_space.draw()
+        drawer.draw()
 
         FPS.update()
         Graphics.flip()

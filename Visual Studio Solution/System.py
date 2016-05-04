@@ -44,6 +44,14 @@ class System:
 
         NODE_SIZE = (NODE_WIDTH, NODE_HEIGHT)
 
+        NUM_NODES_X = None
+        NUM_NODES_Y = None
+
+        NUM_NODES = (None, None)
+
+        REMAINING_SPACE_X = None
+        REMAINING_SPACE_Y = None
+
         LINE_WIDTH = 5
         LINE_HEIGHT = 5
 
