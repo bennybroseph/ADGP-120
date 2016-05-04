@@ -78,17 +78,17 @@ class SearchSpace(object):
 
     def reset_search_space(self, current_node=None):
 
-        self._path_found = False  # We're starting up the pathfinding function, so we have not found the path yet
+        self._path_found = False
 
         if current_node is None:
             current_node = self._start_node  # Set the current node to the starting node by default
 
-        self._open_list = [current_node]  # Initialize the open list with the currentNode as the only value
-        self._closed_list = []  # Initialize the closed list as an empty list
+        self._open_list = [current_node]  # Initialize the open list with the currentNode
+        self._closed_list = []  # Empty out the closed list
 
         # Remove all parents from all nodes before starting the pathfinding
-        for list in self._nodes:
-            for node in list:
+        for node_list in self._nodes:
+            for node in node_list:
                 node.parent_node = None
 
     # Calculate the Heuristic of each node based on Manhattan Distance
@@ -131,7 +131,8 @@ class SearchSpace(object):
 
             for adjacent in adjacent_data:
                 if adjacent['Node'].traversable:
-                    if adjacent['Node'] not in self._open_list and adjacent['Node'] not in self._closed_list:
+                    if adjacent['Node'] not in self._open_list \
+                            and adjacent['Node'] not in self._closed_list:
                         self._open_list.append(adjacent['Node'])
 
                         adjacent['Node'].g_score = adjacent['Cost']

@@ -69,7 +69,8 @@ class FPS(object):
             FPS._last_update = 0
 
             FPS._surface = FPS._font.render("FPS: " + str(FPS._current_fps), 1, System.Color.WHITE)
-            FPS._outline_surface = FPS._font.render("FPS: " + str(FPS._current_fps), 1, System.Color.BLACK)
+            FPS._outline_surface = \
+                FPS._font.render("FPS: " + str(FPS._current_fps), 1, System.Color.BLACK)
 
             FPS._surface_rect = FPS._surface.get_rect()
             FPS._surface_rect.move_ip(Graphics.get_resolution()[0] / 2, 15)

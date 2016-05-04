@@ -20,13 +20,13 @@ class Drawer:
         # region -- NODE SURFACE --
         self._help_font = pygame.font.SysFont("Pokemon_FireRed.ttf", 28)
 
-        self._nodes_surface_dirty = True  # Whether or not the '_nodes_surface' is dirty and needs to be updated
+        self._nodes_surface_dirty = True  # True when the surface needs to be updated
         self._display_nodes = True  # Whether or not to display the '_nodes_surface'
 
         # Create a transparency enabled surface
         self._nodes_surface = pygame.Surface(System.Display.RESOLUTION_SIZE, pygame.SRCALPHA, 32)
-        self._nodes_surface = self._nodes_surface.convert_alpha()
-        self._nodes_surface_rect = self._nodes_surface.get_rect()  # A 'pygame.rect' to use for the surface
+        self._nodes_surface = self._nodes_surface.convert_alpha()  # Enables transparency
+        self._nodes_surface_rect = self._nodes_surface.get_rect()
 
         # Center it to the screen
         self._nodes_surface_rect.x = System.Display.RESOLUTION_WIDTH / 2
@@ -34,13 +34,13 @@ class Drawer:
         # endregion
 
         # region -- DEBUG SURFACE --
-        self._debug_surface_dirty = True  # Whether or not the '_debug_surface' is dirty and needs to be updated
+        self._debug_surface_dirty = True  # True when the surface needs to be updated
         self._display_debug = True  # Whether or not to display the '_debug_surface'
 
-        self._debug_surface = pygame.Surface(System.Display.RESOLUTION_SIZE, pygame.SRCALPHA,
-                                             32)  # Create a transparency enabled surface
-        self._debug_surface = self._debug_surface.convert_alpha()
-        self._debug_surface_rect = self._debug_surface.get_rect()  # A 'pygame.rect' to use for the surface
+        # Create a transparency enabled surface
+        self._debug_surface = pygame.Surface(System.Display.RESOLUTION_SIZE, pygame.SRCALPHA, 32)
+        self._debug_surface = self._debug_surface.convert_alpha()  # Enables transparency
+        self._debug_surface_rect = self._debug_surface.get_rect()
 
         # Center it to the screen
         self._debug_surface_rect.x = System.Display.RESOLUTION_WIDTH / 2
@@ -50,13 +50,13 @@ class Drawer:
         # region -- FONT SURFACE --
         self._font = pygame.font.SysFont("Pokemon_FireRed.ttf", 18)
 
-        self._font_surface_dirty = True  # Whether or not the '_font_surface' is dirty and needs to be updated
+        self._font_surface_dirty = True  # True when the surface needs to be updated
         self._display_text = False  # Whether or not to display the '_font_surface'
 
-        self._font_surface = pygame.Surface(System.Display.RESOLUTION_SIZE, pygame.SRCALPHA,
-                                            32)  # Create a transparency enabled surface
-        self._font_surface = self._font_surface.convert_alpha()
-        self._font_surface_rect = self._font_surface.get_rect()  # A 'pygame.rect' to use for the surface
+        # Create a transparency enabled surface
+        self._font_surface = pygame.Surface(System.Display.RESOLUTION_SIZE, pygame.SRCALPHA, 32)
+        self._font_surface = self._font_surface.convert_alpha()  # Enables transparency
+        self._font_surface_rect = self._font_surface.get_rect()
 
         # Center it to the screen
         self._font_surface_rect.x = System.Display.RESOLUTION_WIDTH / 2
@@ -70,12 +70,13 @@ class Drawer:
         pause_text = pause_font.render("PAUSED", 1, System.Color.WHITE)
         pause_text_rect = pause_text.get_rect()
 
+        # Create a transparency enabled surface
         self._pause_surface = pygame.Surface(
             (pause_text_rect.width + 50,
-             pause_text_rect.height + 50), pygame.SRCALPHA, 32)  # Create a transparency enabled surface
-        self._pause_surface = self._pause_surface.convert_alpha()
-        self._pause_surface.fill((0, 0, 0, 240))
-        self._pause_surface_rect = self._pause_surface.get_rect()  # A 'pygame.rect' to use for the surface
+             pause_text_rect.height + 50), pygame.SRCALPHA, 32)
+        self._pause_surface = self._pause_surface.convert_alpha()  # Enables transparency
+        self._pause_surface.fill((0, 0, 0, 240))  # Transparent black color
+        self._pause_surface_rect = self._pause_surface.get_rect()
 
         # Center it to the screen
         self._pause_surface_rect.x = System.Display.RESOLUTION_WIDTH / 2
@@ -91,12 +92,13 @@ class Drawer:
         # region -- HELP SURFACE --
         self._display_help = False
 
+        # Create a transparency enabled surface
         self._help_surface = pygame.Surface(
             (System.Display.RESOLUTION_WIDTH / 1.15,
-             System.Display.RESOLUTION_HEIGHT / 1.15), pygame.SRCALPHA, 32)  # Create a transparency enabled surface
-        self._help_surface = self._help_surface.convert_alpha()
+             System.Display.RESOLUTION_HEIGHT / 1.15), pygame.SRCALPHA, 32)
+        self._help_surface = self._help_surface.convert_alpha()  # Enables transparency
         self._help_surface.fill((0, 0, 0, 180))
-        self._help_surface_rect = self._help_surface.get_rect()  # A 'pygame.rect' to use for the surface
+        self._help_surface_rect = self._help_surface.get_rect()
 
         # Center it to the screen
         self._help_surface_rect.x = System.Display.RESOLUTION_WIDTH / 2
@@ -144,13 +146,15 @@ class Drawer:
                 temp_surface_rect = temp_surface.get_rect()
 
                 temp_num_items = len(text_list) - 1 if len(text_list) - 1 > 0 else 1
-                temp_height = (j * float((self._help_surface_rect.height - 150) / temp_num_items)) + 75
+                temp_height = \
+                    (j * float((self._help_surface_rect.height - 150) / temp_num_items)) + 75
 
                 if i == 0:
                     temp_surface_rect.x = 10
                     temp_surface_rect.y = temp_height - (temp_surface_rect.height / 2)
                 else:
-                    temp_surface_rect.x = self._help_surface_rect.width - temp_surface_rect.width - 10
+                    temp_surface_rect.x = \
+                        self._help_surface_rect.width - temp_surface_rect.width - 10
                     temp_surface_rect.y = temp_height - (temp_surface_rect.height / 2)
 
                 self._help_surface.blit(temp_surface, temp_surface_rect)
@@ -191,8 +195,10 @@ class Drawer:
                 System.Graph.NODE_HEIGHT + System.Graph.LINE_HEIGHT)))
 
         # Left Click
-        if mouse_button == 1 and self._search_space.nodes[selected_index[0]][selected_index[1]].traversable:
-            self._search_space.start_node = self._search_space.nodes[selected_index[0]][selected_index[1]]
+        if mouse_button == 1 \
+                and self._search_space.nodes[selected_index[0]][selected_index[1]].traversable:
+            self._search_space.start_node = \
+                self._search_space.nodes[selected_index[0]][selected_index[1]]
             self._search_space.reset_search_space()
             self.path_find_generator = self._search_space.path_find()
 
@@ -203,7 +209,8 @@ class Drawer:
 
         # Right Click
         if mouse_button == 3:
-            self._search_space.end_node = self._search_space.nodes[selected_index[0]][selected_index[1]]
+            self._search_space.end_node = \
+                self._search_space.nodes[selected_index[0]][selected_index[1]]
             self._search_space.calculate_heuristic()
             self._search_space.reset_search_space()
             self.path_find_generator = self._search_space.path_find()
@@ -229,7 +236,9 @@ class Drawer:
     def update(self):
         self._last_update += FPS.delta_time()
 
-        if self._last_update >= self._solve_delay and not self._paused and not self._search_space.path_found:
+        if self._last_update >= self._solve_delay \
+                and not self._paused \
+                and not self._search_space.path_found:
             try:
                 if self._solve_delay == 0:
                     while True:
@@ -260,33 +269,36 @@ class Drawer:
                 for y in range(0, len(self._search_space.nodes[x])):
 
                     if self._nodes_surface_dirty:
-                        node_surface = pygame.Surface((System.Graph.NODE_WIDTH, System.Graph.NODE_HEIGHT))
+                        node_surface = pygame.Surface(
+                            (System.Graph.NODE_WIDTH, System.Graph.NODE_HEIGHT))
 
                         self._search_space.nodes[x][y].update_surface_color(
                             self._search_space.open_list, self._search_space.closed_list,
                             self._search_space.start_node, self._search_space.end_node)
                         node_surface.fill(self._search_space.nodes[x][y].surface_color)
 
-                        self._nodes_surface.blit(node_surface, self._search_space.nodes[x][y].surface_rect)
+                        self._nodes_surface.blit(
+                            node_surface, self._search_space.nodes[x][y].surface_rect)
 
-                    if self._debug_surface_dirty and self._search_space.nodes[x][y].parent_node is not None:
+                    if self._debug_surface_dirty \
+                            and self._search_space.nodes[x][y].parent_node is not None:
                         pygame.draw.line(
                             self._debug_surface,
                             System.Color.BLACK,
-                            (
-                                   self._search_space.nodes[x][y].surface_rect.x
-                                + (self._search_space.nodes[x][y].surface_rect.width / 2),
-                                   self._search_space.nodes[x][y].surface_rect.y
-                                + (self._search_space.nodes[x][y].surface_rect.height / 2)),
-                            (
-                                   self._search_space.nodes[x][y].parent_node.surface_rect.x
-                                + (self._search_space.nodes[x][y].parent_node.surface_rect.width / 2),
-                                   self._search_space.nodes[x][y].parent_node.surface_rect.y
-                                + (self._search_space.nodes[x][y].parent_node.surface_rect.height / 2)))
+                            (self._search_space.nodes[x][y].surface_rect.x +
+                             (self._search_space.nodes[x][y].surface_rect.width / 2),
+                             self._search_space.nodes[x][y].surface_rect.y +
+                             (self._search_space.nodes[x][y].surface_rect.height / 2)),
+                            (self._search_space.nodes[x][y].parent_node.surface_rect.x +
+                             (self._search_space.nodes[x][y].parent_node.surface_rect.width / 2),
+                             self._search_space.nodes[x][y].parent_node.surface_rect.y +
+                             (self._search_space.nodes[x][y].parent_node.surface_rect.height / 2)
+                            ))
 
                     if self._font_surface_dirty and self._search_space.nodes[x][y].traversable:
                         text_color = \
-                            System.Color.BLACK if self._search_space.nodes[x][y] in self._search_space.open_list \
+                            System.Color.BLACK \
+                            if self._search_space.nodes[x][y] in self._search_space.open_list \
                             else System.Color.LIGHT_GREY
 
                         h_text_surface = self._font.render(
@@ -294,10 +306,12 @@ class Drawer:
 
                         h_text_surface_rect = h_text_surface.get_rect()
                         h_text_surface_rect = (
-                            self._search_space.nodes[x][y].surface_rect.x
-                                + self._search_space.nodes[x][y].surface_rect.width - h_text_surface_rect.width,
-                            self._search_space.nodes[x][y].surface_rect.y
-                                + self._search_space.nodes[x][y].surface_rect.height - h_text_surface_rect.height)
+                            self._search_space.nodes[x][y].surface_rect.x +
+                            self._search_space.nodes[x][y].surface_rect.width -
+                            h_text_surface_rect.width,
+                            self._search_space.nodes[x][y].surface_rect.y +
+                            self._search_space.nodes[x][y].surface_rect.height -
+                            h_text_surface_rect.height)
 
                         g_text_surface = self._font.render(
                             'G: ' + str(self._search_space.nodes[x][y].g_score), 1, text_color)
@@ -305,8 +319,9 @@ class Drawer:
                         g_text_surface_rect = h_text_surface.get_rect()
                         g_text_surface_rect = (
                             self._search_space.nodes[x][y].surface_rect.x,
-                            self._search_space.nodes[x][y].surface_rect.y + self._search_space.nodes[x][
-                                y].surface_rect.height - g_text_surface_rect.height)
+                            self._search_space.nodes[x][y].surface_rect.y +
+                            self._search_space.nodes[x][y].surface_rect.height -
+                            g_text_surface_rect.height)
 
                         f_text_surface = self._font.render(
                             'F: ' + str(self._search_space.nodes[x][y].f_score), 1, text_color)
@@ -318,12 +333,14 @@ class Drawer:
                         self._font_surface.blit(f_text_surface, f_text_surface_rect)
 
             if self._nodes_surface_dirty and not self._display_help:
-                direction_list = [(1, 0), (0, 1), (-1, 0), (0, -1), (1, 1), (-1, -1), (1, -1), (-1, 1), (0, 0)]
+                direction_list = [(1, 0), (0, 1), (-1, 0), (0, -1),
+                                  (1, 1), (-1, -1), (1, -1), (-1, 1), (0, 0)]
 
                 i = 0
                 for direction in direction_list:
-                    temp_text = self._help_font.render('F1 = Help', 1, System.Color.WHITE if i == len(
-                        direction_list) - 1 else System.Color.BLACK)
+                    temp_text = self._help_font.render(
+                        'F1 = Help', 1,
+                        System.Color.WHITE if i == len(direction_list) - 1 else System.Color.BLACK)
                     temp_text_rect = temp_text.get_rect()
 
                     temp_text_rect.x += direction[0]
@@ -339,13 +356,15 @@ class Drawer:
                         self._debug_surface,
                         System.Color.DARK_GREEN,
                         (
-                            current_path_node.surface_rect.x + (current_path_node.surface_rect.width / 2),
-                            current_path_node.surface_rect.y + (current_path_node.surface_rect.height / 2)),
+                            current_path_node.surface_rect.x +
+                            (current_path_node.surface_rect.width / 2),
+                            current_path_node.surface_rect.y +
+                            (current_path_node.surface_rect.height / 2)),
                         (
-                            current_path_node.parent_node.surface_rect.x
-                                + (current_path_node.parent_node.surface_rect.width / 2),
-                            current_path_node.parent_node.surface_rect.y
-                                + (current_path_node.parent_node.surface_rect.height / 2)),
+                            current_path_node.parent_node.surface_rect.x +
+                            (current_path_node.parent_node.surface_rect.width / 2),
+                            current_path_node.parent_node.surface_rect.y +
+                            (current_path_node.parent_node.surface_rect.height / 2)),
                         5)
 
                     current_path_node = current_path_node.parent_node

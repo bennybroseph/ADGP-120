@@ -1,7 +1,11 @@
 class System:
-    # Standard color values
-    # Access with 'System.Color'
+
     class Color:
+        """
+        Standard color values
+
+        Access with 'System.Color'
+        """
         RED = (244, 67, 54, 255)
         GREEN = (76, 175, 80, 255)
         DARK_GREEN = (56, 142, 60, 255)
@@ -18,9 +22,12 @@ class System:
 
         TRANSPARENT = (0, 0, 0, 0)
 
-    # Configuration for default window sizes
-    # Access with 'System.Display'
     class Display:
+        """
+        Configuration for default window sizes
+
+        Access with 'System.Display'
+        """
         RESOLUTION_WIDTH = 1600
         RESOLUTION_HEIGHT = 900
 
@@ -60,8 +67,10 @@ class System:
     Graph.NUM_NODES_X = (Display.RESOLUTION_WIDTH / Graph.NODE_WIDTH)
     Graph.NUM_NODES_Y = (Display.RESOLUTION_HEIGHT / Graph.NODE_HEIGHT)
 
-    Graph.NUM_NODES_X = (Display.RESOLUTION_WIDTH - (Graph.LINE_WIDTH * Graph.NUM_NODES_X)) / Graph.NODE_WIDTH
-    Graph.NUM_NODES_Y = (Display.RESOLUTION_HEIGHT - (Graph.LINE_HEIGHT * Graph.NUM_NODES_Y)) / Graph.NODE_HEIGHT
+    Graph.NUM_NODES_X = \
+        (Display.RESOLUTION_WIDTH - (Graph.LINE_WIDTH * Graph.NUM_NODES_X)) / Graph.NODE_WIDTH
+    Graph.NUM_NODES_Y = \
+        (Display.RESOLUTION_HEIGHT - (Graph.LINE_HEIGHT * Graph.NUM_NODES_Y)) / Graph.NODE_HEIGHT
 
     Graph.REMAINING_SPACE_X = Display.RESOLUTION_WIDTH - (
         (Graph.NODE_WIDTH * Graph.NUM_NODES_X) + (Graph.LINE_WIDTH * Graph.NUM_NODES_X))

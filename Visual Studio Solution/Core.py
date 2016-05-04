@@ -1,3 +1,10 @@
+"""
+File:           Core.py
+Author:         Benjamin Odom
+Date Created:   04-24-2016
+Brief:      Main file where execution starts. In lue of an event class, this file handles user input
+        and passes it along to whatever functions are registered to each action
+"""
 import sys
 import pygame
 
@@ -8,6 +15,11 @@ from Drawer import Drawer
 
 
 def main():
+    """
+    Main starting point for the program
+
+    :return: N/A
+    """
     Graphics.init()
     FPS.init()
 

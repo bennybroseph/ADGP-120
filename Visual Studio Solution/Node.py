@@ -86,7 +86,8 @@ class Node(object):
     def update_f(self):
         self.f_score = self.g_score + self.h_score
 
-    def update_surface_color(self, open_list=None, closed_list=None, start_node=None, end_node=None):
+    def update_surface_color(self,
+                             open_list=None, closed_list=None, start_node=None, end_node=None):
         if open_list is None:
             self._surface_color = System.Color.WHITE if self._traversable else System.Color.RED
         else:
