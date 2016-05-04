@@ -7,92 +7,103 @@ from Graphics import Graphics
 
 
 class FPS(object):
-    s_Self = None
 
-    def __init__(self):
-        if FPS.s_Self is not None:
-            raise Exception('This singleton class already exists')
+    _clock = None
+
+    _current_time = None
+    _previous_time = None
+    _delta_time = None
+
+    _current_frames = None
+
+    _current_fps = None
+
+    _last_update = None
+
+    _font = None
+
+    _surface = None
+    _surface_rect = None
+
+    _outline_surface = None
+    _outline_surface_rect = None
 
     @staticmethod
     def init():
-        FPS.s_Self = FPS()
+        FPS._clock = pygame.time.Clock()
 
-        FPS.s_Self.m_Clock = pygame.time.Clock()
+        FPS._current_time = time.time()
+        FPS._previous_time = FPS._current_time
+        FPS._delta_time = 0
 
-        FPS.s_Self.m_CurrentTime = time.time()
-        FPS.s_Self.m_PrevTime = FPS.s_Self.m_CurrentTime
-        FPS.s_Self.m_DeltaTime = 0
+        FPS._current_frames = 0
+        FPS._current_fps = FPS._current_frames
+        FPS._last_update = 0
 
-        FPS.s_Self.m_CurrentFrames = 0
-        FPS.s_Self.m_CurrentFPS = FPS.s_Self.m_CurrentFrames
-        FPS.s_Self.m_TimeSinceLastUpdate = 0
+        FPS._font = pygame.font.SysFont("Pokemon_FireRed.ttf", 24)
 
-        FPS.s_Self.m_Font = pygame.font.SysFont("Pokemon_FireRed.ttf", 24)
+        FPS._surface = pygame.Surface((0, 0))
+        FPS._surface_rect = FPS._surface.get_rect()
 
-        FPS.s_Self.m_FpsText = pygame.Surface((0, 0))
-        FPS.s_Self.m_FpsTextRect = FPS.s_Self.m_FpsText.get_rect()
-
-        FPS.s_Self.m_FpsTextOutline = pygame.Surface((0, 0))
-        FPS.s_Self.m_FpsTextOutlineRect = FPS.s_Self.m_FpsText.get_rect()
+        FPS._outline_surface = pygame.Surface((0, 0))
+        FPS._outline_surface_rect = FPS._surface.get_rect()
 
     @staticmethod
     def delta_time():
-        return FPS.s_Self.m_DeltaTime
+        return FPS._delta_time
 
     @staticmethod
     def update():
-        FPS.s_Self.m_CurrentFrames += 1
+        FPS._current_frames += 1
 
-        FPS.s_Self.m_PrevTime = FPS.s_Self.m_CurrentTime
-        FPS.s_Self.m_CurrentTime = time.time()
+        FPS._previous_time = FPS._current_time
+        FPS._current_time = time.time()
 
-        FPS.s_Self.m_DeltaTime = FPS.s_Self.m_CurrentTime - FPS.s_Self.m_PrevTime
-        FPS.s_Self.m_TimeSinceLastUpdate += FPS.s_Self.m_DeltaTime
+        FPS._delta_time = FPS._current_time - FPS._previous_time
+        FPS._last_update += FPS._delta_time
 
-        if FPS.s_Self.m_TimeSinceLastUpdate >= 1:
-            FPS.s_Self.m_CurrentFPS = FPS.s_Self.m_CurrentFrames
+        if FPS._last_update >= 1:
+            FPS._current_fps = FPS._current_frames
 
-            FPS.s_Self.m_CurrentFrames = 0
-            FPS.s_Self.m_TimeSinceLastUpdate = 0
+            FPS._current_frames = 0
+            FPS._last_update = 0
 
-            FPS.s_Self.m_FpsText = FPS.s_Self.m_Font.render("FPS: " + str(FPS.s_Self.m_CurrentFPS), 1,
-                                                            System.Color.WHITE)
-            FPS.s_Self.m_FpsTextOutline = FPS.s_Self.m_Font.render("FPS: " + str(FPS.s_Self.m_CurrentFPS), 1,
-                                                                   System.Color.BLACK)
+            FPS._surface = FPS._font.render("FPS: " + str(FPS._current_fps), 1, System.Color.WHITE)
+            FPS._outline_surface = FPS._font.render("FPS: " + str(FPS._current_fps), 1, System.Color.BLACK)
 
-            FPS.s_Self.m_FpsTextRect = FPS.s_Self.m_FpsText.get_rect()
-            FPS.s_Self.m_FpsTextRect.move_ip(Graphics.get_resolution()[0] / 2, 15)
+            FPS._surface_rect = FPS._surface.get_rect()
+            FPS._surface_rect.move_ip(Graphics.get_resolution()[0] / 2, 15)
 
-            FPS.s_Self.m_FpsTextOutlineRect = FPS.s_Self.m_FpsText.get_rect()
+            FPS._outline_surface_rect = FPS._surface.get_rect()
 
         # Draws an outline for the FPS 
-        Graphics.draw(FPS.s_Self.m_FpsTextOutline,
-                      pygame.Rect(FPS.s_Self.m_FpsTextRect.x + 1, FPS.s_Self.m_FpsTextRect.y,
-                                  FPS.s_Self.m_FpsTextRect.width, FPS.s_Self.m_FpsTextRect.height))
-        Graphics.draw(FPS.s_Self.m_FpsTextOutline,
-                      pygame.Rect(FPS.s_Self.m_FpsTextRect.x - 1, FPS.s_Self.m_FpsTextRect.y,
-                                  FPS.s_Self.m_FpsTextRect.width, FPS.s_Self.m_FpsTextRect.height))
-        Graphics.draw(FPS.s_Self.m_FpsTextOutline,
-                      pygame.Rect(FPS.s_Self.m_FpsTextRect.x, FPS.s_Self.m_FpsTextRect.y + 1,
-                                  FPS.s_Self.m_FpsTextRect.width, FPS.s_Self.m_FpsTextRect.height))
-        Graphics.draw(FPS.s_Self.m_FpsTextOutline,
-                      pygame.Rect(FPS.s_Self.m_FpsTextRect.x, FPS.s_Self.m_FpsTextRect.y - 1,
-                                  FPS.s_Self.m_FpsTextRect.width, FPS.s_Self.m_FpsTextRect.height))
+        Graphics.draw(FPS._outline_surface,
+                      pygame.Rect(FPS._surface_rect.x + 1, FPS._surface_rect.y,
+                                  FPS._surface_rect.width, FPS._surface_rect.height))
+        Graphics.draw(FPS._outline_surface,
+                      pygame.Rect(FPS._surface_rect.x - 1, FPS._surface_rect.y,
+                                  FPS._surface_rect.width, FPS._surface_rect.height))
+        Graphics.draw(FPS._outline_surface,
+                      pygame.Rect(FPS._surface_rect.x, FPS._surface_rect.y + 1,
+                                  FPS._surface_rect.width, FPS._surface_rect.height))
+        Graphics.draw(FPS._outline_surface,
+                      pygame.Rect(FPS._surface_rect.x, FPS._surface_rect.y - 1,
+                                  FPS._surface_rect.width, FPS._surface_rect.height))
 
-        Graphics.draw(FPS.s_Self.m_FpsTextOutline,
-                      pygame.Rect(FPS.s_Self.m_FpsTextRect.x + 1, FPS.s_Self.m_FpsTextRect.y + 1,
-                                  FPS.s_Self.m_FpsTextRect.width, FPS.s_Self.m_FpsTextRect.height))
-        Graphics.draw(FPS.s_Self.m_FpsTextOutline,
-                      pygame.Rect(FPS.s_Self.m_FpsTextRect.x - 1, FPS.s_Self.m_FpsTextRect.y - 1,
-                                  FPS.s_Self.m_FpsTextRect.width, FPS.s_Self.m_FpsTextRect.height))
-        Graphics.draw(FPS.s_Self.m_FpsTextOutline,
-                      pygame.Rect(FPS.s_Self.m_FpsTextRect.x - 1, FPS.s_Self.m_FpsTextRect.y + 1,
-                                  FPS.s_Self.m_FpsTextRect.width, FPS.s_Self.m_FpsTextRect.height))
-        Graphics.draw(FPS.s_Self.m_FpsTextOutline,
-                      pygame.Rect(FPS.s_Self.m_FpsTextRect.x + 1, FPS.s_Self.m_FpsTextRect.y - 1,
-                                  FPS.s_Self.m_FpsTextRect.width, FPS.s_Self.m_FpsTextRect.height))
+        Graphics.draw(FPS._outline_surface,
+                      pygame.Rect(FPS._surface_rect.x + 1, FPS._surface_rect.y + 1,
+                                  FPS._surface_rect.width, FPS._surface_rect.height))
+        Graphics.draw(FPS._outline_surface,
+                      pygame.Rect(FPS._surface_rect.x - 1, FPS._surface_rect.y - 1,
+                                  FPS._surface_rect.width, FPS._surface_rect.height))
+        Graphics.draw(FPS._outline_surface,
+                      pygame.Rect(FPS._surface_rect.x - 1, FPS._surface_rect.y + 1,
+                                  FPS._surface_rect.width, FPS._surface_rect.height))
+        Graphics.draw(FPS._outline_surface,
+                      pygame.Rect(FPS._surface_rect.x + 1, FPS._surface_rect.y - 1,
+                                  FPS._surface_rect.width, FPS._surface_rect.height))
         # End of Outline
 
-        Graphics.draw(FPS.s_Self.m_FpsText, FPS.s_Self.m_FpsTextRect)
+        Graphics.draw(FPS._surface, FPS._surface_rect)
 
-        FPS.s_Self.m_Clock.tick(System.Display.TARGET_FPS)
+        FPS._clock.tick(System.Display.TARGET_FPS)
