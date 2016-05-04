@@ -1,62 +1,56 @@
 import sys
-import time
-
 import pygame
 
-from System		import *
-from Graphics	import *
-from FPS 		import *
+from Graphics import Graphics
+from FPS import FPS
 
-from Node           import *
-from SearchSpace    import *
+from SearchSpace import SearchSpace
+
 
 def main():
-    Graphics.Init()
-    FPS.Init()
-    
-    searchspace = SearchSpace()
+    Graphics.init()
+    FPS.init()
 
-    KeyDownListeners = []
-    KeyDownListeners.append(searchspace.OnKeyDown)
+    search_space = SearchSpace()
 
-    MouseDownListeners = []
-    MouseDownListeners.append(searchspace.OnMouseDown)
+    key_down_listeners = [search_space.on_key_down]
 
-    MouseUpListeners = []
-    MouseUpListeners.append(searchspace.OnMouseUp)
-    
+    mouse_down_listeners = [search_space.on_mouse_down]
+
+    mouse_up_listeners = [search_space.on_mouse_up]
+
     while True:
 
-        for event in pygame.event.get():            
-            if event.type == pygame.QUIT: sys.exit()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:sys.exit()
+                if event.key == pygame.K_ESCAPE:
+                    sys.exit()
                 if event.key == pygame.K_F10:
-                    Graphics.ToggleFullscreen()
-                for delegate in KeyDownListeners:
+                    Graphics.toggle_fullscreen()
+
+                for delegate in key_down_listeners:
                     delegate(event.key, event.mod)
 
             if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEBUTTONUP:
-                mousePos = (event.pos[0] / Graphics.GetScale()[0], event.pos[1] / Graphics.GetScale()[1])
+                mouse_position = (event.pos[0] / Graphics.get_scale()[0],
+                                  event.pos[1] / Graphics.get_scale()[1])
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    for delegate in MouseDownListeners:
-                        delegate(mousePos, event.button)
-               
-                if event.type == pygame.MOUSEBUTTONUP:  
-                    for delegate in MouseUpListeners:
-                        delegate(mousePos, event.button)
-        
-       
-        
-       
-       
-        
-        searchspace.Update()
+                    for delegate in mouse_down_listeners:
+                        delegate(mouse_position, event.button)
 
-        searchspace.Draw()
+                if event.type == pygame.MOUSEBUTTONUP:
+                    for delegate in mouse_up_listeners:
+                        delegate(mouse_position, event.button)
 
-        FPS.Update()
-        Graphics.Flip()
+        search_space.update()
+
+        search_space.draw()
+
+        FPS.update()
+        Graphics.flip()
+
 
 main()

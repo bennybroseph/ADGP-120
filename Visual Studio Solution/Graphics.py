@@ -1,127 +1,132 @@
 import os
-import sys
 import copy
 
 import Tkinter
 import pygame
 import pygame.font
 
-from System import *
+from System import System
 
-class Graphics(object):	
 
-    s_Self = None   # Singleton instance
-    
+class Graphics(object):
+    s_Self = None  # Singleton instance
+
     def __init__(self):
         # Prevent the application from creating multiple graphics instances
         if Graphics.s_Self != None:
             raise Exception('This singleton class already exists')
 
     # Reinitialize the window with the new parameters
-    def ResizeWindow(self, a_Dimensions = (0, 0), a_Flags = 0, a_Depth = 0):
-        self.m_Dimensions = a_Dimensions    # Update the 'm_Dimensions' variable
-        self.m_Scale = ( 
-            (float(self.m_Dimensions[0]) / float(self.m_Resolution[0])),    # Sets the scale for width
-            (float(self.m_Dimensions[1]) / float(self.m_Resolution[1])))    # Sets the scale for height
+    def resize_window(self, dimensions=(0, 0), flags=0, depth=0):
+        self.m_Dimensions = dimensions  # Update the 'm_Dimensions' variable
+        self.m_Scale = (
+            (float(self.m_Dimensions[0]) / float(self.m_Resolution[0])),  # Sets the scale for width
+            (float(self.m_Dimensions[1]) / float(self.m_Resolution[1])))  # Sets the scale for height
+        # Since the window was changed, update the 'm_Screen' variable to match
+        self.m_Screen = pygame.display.set_mode(dimensions, flags,
+                                                depth)
 
-        self.m_Screen = pygame.display.set_mode(a_Dimensions, a_Flags, a_Depth) # Since the window was changed, update the 'm_Screen' variable to match
-
-        pygame.display.update() # Lets pygame know the window has been changed
+        pygame.display.update()  # Lets pygame know the window has been changed
 
     # Static method which needs to be called in order to initialize the 'Graphics' class
     @staticmethod
-    def Init():
-        Graphics.s_Self = Graphics()    # Create new instance of 'Graphics' and set the singleton variable to it
-        
-        root = Tkinter.Tk() # Grab Tkinter toplevel widget in order to grab the monitor's current resolution
-        Graphics.s_Self.m_MonitorResolution = (root.winfo_screenwidth(), root.winfo_screenheight()) # Store the resolution into 'm_MonitorResolution'
-        
+    def init():
+        Graphics.s_Self = Graphics()  # Create new instance of 'Graphics' and set the singleton variable to it
+
+        root = Tkinter.Tk()  # Grab Tkinter top-level widget in order to grab the monitor's current resolution
+        Graphics.s_Self.m_MonitorResolution = (
+            root.winfo_screenwidth(), root.winfo_screenheight())  # Store the resolution into 'm_MonitorResolution'
+
         # Center's the window based on the monitor's resolution
         os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (
-	        (Graphics.s_Self.m_MonitorResolution[0] / 2) - (System.Display.WINDOW_WIDTH / 2),    
-	        (Graphics.s_Self.m_MonitorResolution[1] / 2) - (System.Display.WINDOW_HEIGHT / 2))  
-        
-        pygame.init()   # Initializes everything for pygame including pygame.font
-        
-        Graphics.s_Self.m_Resolution 	= System.Display.RESOLUTION_SIZE    # 'Graphics' will scale images to a certain resolution set here
-        Graphics.s_Self.ResizeWindow(System.Display.WINDOW_SIZE)            # Sets up the window
+            (Graphics.s_Self.m_MonitorResolution[0] / 2) - (System.Display.WINDOW_WIDTH / 2),
+            (Graphics.s_Self.m_MonitorResolution[1] / 2) - (System.Display.WINDOW_HEIGHT / 2))
 
-        Graphics.s_Self.m_IsFullscreen 	= False # Keeps track of if the window is fullscreen or not
-        
-        pygame.display.set_caption("AStar") # Sets the window caption
-    
+        pygame.init()  # Initializes everything for pygame including pygame.font
+
+        # 'Graphics' will scale images to a certain resolution set here
+        Graphics.s_Self.m_Resolution = System.Display.RESOLUTION_SIZE
+        Graphics.s_Self.resize_window(System.Display.WINDOW_SIZE)  # Sets up the window
+
+        Graphics.s_Self.m_IsFullscreen = False  # Keeps track of if the window is full-screen or not
+
+        pygame.display.set_caption("AStar")  # Sets the window caption
+
     # Toggles the window between windowed and fullscreen
     @staticmethod
-    def ToggleFullscreen():
-        if(Graphics.s_Self.m_IsFullscreen):
-            Graphics.s_Self.ResizeWindow(System.Display.WINDOW_SIZE)
+    def toggle_fullscreen():
+        if Graphics.s_Self.m_IsFullscreen:
+            Graphics.s_Self.resize_window(System.Display.WINDOW_SIZE)
         else:
-            Graphics.s_Self.ResizeWindow(System.Display.FULLSCREEN_SIZE, pygame.FULLSCREEN)
-        
+            Graphics.s_Self.resize_window(System.Display.FULLSCREEN_SIZE, pygame.FULLSCREEN)
+
         Graphics.s_Self.m_IsFullscreen = not Graphics.s_Self.m_IsFullscreen
         pygame.display.update()
-    
+
     # Draws centered images to the screen scaled to against the resolution
     @staticmethod
-    def Draw(a_Surface, a_Rect):
+    def draw(surface, rect):
         # Attempts to 'smoothscale' the image first, but if it cannot due to color-depth...
         try:
-            a_Surface = pygame.transform.smoothscale(a_Surface, (int(a_Rect.width * Graphics.s_Self.m_Scale[0]), int(a_Rect.height * Graphics.s_Self.m_Scale[1])))
+            surface = pygame.transform.smoothscale(surface, (
+                int(rect.width * Graphics.s_Self.m_Scale[0]), int(rect.height * Graphics.s_Self.m_Scale[1])))
         # Then it does a standard scale
         except ValueError:
-            a_Surface = pygame.transform.scale(a_Surface, (int(a_Rect.width * Graphics.s_Self.m_Scale[0]), int(a_Rect.height * Graphics.s_Self.m_Scale[1])))
-        
+            surface = pygame.transform.scale(surface, (
+                int(rect.width * Graphics.s_Self.m_Scale[0]), int(rect.height * Graphics.s_Self.m_Scale[1])))
+
         # Copy the rect since it is passed by reference automatically and we don't want to change it
-        tempRect = copy.copy(a_Rect)
+        temp_rect = copy.copy(rect)
 
-        tempRect.x -= a_Rect.width / 2
-        tempRect.y -= a_Rect.height / 2
+        temp_rect.x -= rect.width / 2
+        temp_rect.y -= rect.height / 2
 
-        tempRect.x *= Graphics.s_Self.m_Scale[0]
-        tempRect.y *= Graphics.s_Self.m_Scale[1]
+        temp_rect.x *= Graphics.s_Self.m_Scale[0]
+        temp_rect.y *= Graphics.s_Self.m_Scale[1]
 
-        Graphics.s_Self.m_Screen.blit(a_Surface, tempRect)  # Blit the image to the screen surface
-    
+        Graphics.s_Self.m_Screen.blit(surface, temp_rect)  # Blit the image to the screen surface
+
     # Draws a centered rectangle to the screen with the given parameters and scales it against the resolution
     @staticmethod
-    def DrawRect(a_Color, a_Rect, a_Width = 0):
+    def draw_rect(color, rect, width=0):
         # Copy the rect since it is passed by reference automatically and we don't want to change it
-        tempRect = copy.copy(a_Rect)
+        temp_rect = copy.copy(rect)
 
-        tempRect.x *= Graphics.s_Self.m_Scale[0]
-        tempRect.y *= Graphics.s_Self.m_Scale[1]
+        temp_rect.x *= Graphics.s_Self.m_Scale[0]
+        temp_rect.y *= Graphics.s_Self.m_Scale[1]
 
-        tempRect.width  *= Graphics.s_Self.m_Scale[0]
-        tempRect.height *= Graphics.s_Self.m_Scale[1]
+        temp_rect.width *= Graphics.s_Self.m_Scale[0]
+        temp_rect.height *= Graphics.s_Self.m_Scale[1]
 
-        pygame.draw.rect(Graphics.s_Self.m_Screen, a_Color, tempRect, a_Width) # Draw the rectangle to the screen surface
-    
+        pygame.draw.rect(Graphics.s_Self.m_Screen, color, temp_rect,
+                         width)  # Draw the rectangle to the screen surface
+
     # Draws a line to the screen with the given parameters and scales it to the resolution
     @staticmethod
-    def DrawLine(a_Color, a_Start, a_End, a_Width = 1):
-        a_Start = (
-            a_Start[0] * Graphics.s_Self.m_Scale[0], 
-            a_Start[1] * Graphics.s_Self.m_Scale[1])
-        a_End = (
-            a_End[0] * Graphics.s_Self.m_Scale[0], 
-            a_End[1] * Graphics.s_Self.m_Scale[1])
+    def draw_line(color, start, end, width=1):
+        start = (
+            start[0] * Graphics.s_Self.m_Scale[0],
+            start[1] * Graphics.s_Self.m_Scale[1])
+        end = (
+            end[0] * Graphics.s_Self.m_Scale[0],
+            end[1] * Graphics.s_Self.m_Scale[1])
 
-        pygame.draw.line(Graphics.s_Self.m_Screen, a_Color, a_Start, a_End, a_Width)
+        pygame.draw.line(Graphics.s_Self.m_Screen, color, start, end, width)
 
     # Refreshes the window to display the new content
     @staticmethod
-    def Flip():
+    def flip():
         pygame.display.flip()
         Graphics.s_Self.m_Screen.fill(System.Color.BLACK)
-        
+
     @staticmethod
-    def GetDimensions():
+    def get_dimensions():
         return Graphics.s_Self.m_Dimensions
-    
+
     @staticmethod
-    def GetResolution():
+    def get_resolution():
         return Graphics.s_Self.m_Resolution
 
     @staticmethod
-    def GetScale():
+    def get_scale():
         return Graphics.s_Self.m_Scale
